@@ -27,9 +27,27 @@ public class Date {
     private Month dateMonth;
     private Year dateYear;
 
-    public Date(int day, int month, int year) {
-        set(day, month, year);
+    @SuppressWarnings("unused")
+    private Date() {
     }
+
+    private Date(Day dateDay, Month dateMonth, Year dateYear) {
+        this.dateDay = dateDay;
+        this.dateMonth = dateMonth;
+        this.dateYear = dateYear;
+    }
+
+    public static Date of(int day, int month, int year) throws DateTimeException {
+        Year tmpYear = new Year(year);
+        Month tmpMonth = Month.valueOf(month);
+        int maxDay = tmpMonth.getNumDays(year);
+        Day tmpDay = new Day(day, maxDay);
+
+        //не произошло исключение при создании объектов выше- все ок
+
+        return new Date(tmpDay, tmpMonth, tmpYear);
+    }
+
 
     //перевод строки в Date
     //формат строки: "DD.MM.YYYYY"
@@ -54,29 +72,15 @@ public class Date {
         int month = Integer.parseInt(arr[1]);
         int year = Integer.parseInt(arr[2]);
 
-        return new Date(day, month, year);
+        return Date.of(day, month, year);
     }
 
-    //уставновка новой даты
-    //сначала создаем временные объекты- если все ок, записываем их в постоянные объекты даты
-    //для того, что бы старая дата не переписывалась при вводе некорректных значений новой даты
-    private void set(int day, int month, int year) {
-        Year tmpYear = new Year(year);
-        Month tmpMonth = new Month(month);
-        int maxDay = tmpMonth.getDays(tmpYear.isLeapYear());
-        Day tmpDay = new Day(day, maxDay);
-
-        //не произошло исключение при создании объектов выше- все ок
-        dateDay = tmpDay;
-        dateMonth = tmpMonth;
-        dateYear = tmpYear;
-    }
 
     //номер дня с начала года
     public int getDayOfYear() {
         int numDayOfYear = 0;
-        for (int i = 1; i < dateMonth.value ; i++) {
-            numDayOfYear += dateMonth.getDays(i, dateYear.isLeapYear());
+        for (int i = 1; i < dateMonth.getNum() ; i++) {
+            numDayOfYear += dateMonth.getNumDays(dateYear.getValue());
         }
         return numDayOfYear + dateDay.getValue();
     }
@@ -89,29 +93,29 @@ public class Date {
 
     //кол-во дней в месяце
     public int daysInMonth() {
-        return dateMonth.getDays(dateMonth.getValue(), dateYear.isLeapYear());
+        return dateMonth.getNumDays(dateYear.getValue());
     }
 
     //дата по порядковому номеру дня в году
     public static Date dateByDay(int year, int numDay) {
         int cnt = 0;
         int day = 0;
-        int month = 0;
-        Month tmpMoth =  new Month(1);
-        boolean isLeap = new Year(year).isLeapYear();
+        int cntMonth = 0;
+
         for (int i = 1; i <= 12 ; i++) {
-            if(numDay > cnt + tmpMoth.getDays(i, isLeap) ) {
-                month = i;
-                cnt += tmpMoth.getDays(i, isLeap);
+            Month month = Month.valueOf(i);
+            if(numDay > cnt + month.getNumDays(year) ) {
+                cntMonth = i;
+                cnt += month.getNumDays(year);
             }
             else {
-                month++;
+                cntMonth++;
                 day = numDay - cnt;
                 break;
             }
         }
 
-        return new Date(day, month, year);
+        return Date.of(day, cntMonth, year);
     }
 
     //количество дней с начала отcчета - 1.1.1
@@ -142,32 +146,110 @@ public class Date {
         return DayOfWeek.valueOf(day);
     }
 
-    public int getDay() {
+    @SuppressWarnings("unused")
+    public int getNumDay() {
         return dateDay.getValue();
     }
 
-    public int getMonth() {
-        return dateMonth.getValue();
+    @SuppressWarnings("unused")
+    public int getNumMonth() {
+        return dateMonth.getNum();
     }
 
-    public int getYear() {
+    @SuppressWarnings("unused")
+    public int getNumYear() {
         return dateYear.getValue();
     }
 
     @Override
     public String toString() {
-        return String.format("%02d.%02d.%02d", dateDay.getValue(), dateMonth.getValue(), dateYear.getValue());
+        return String.format("%02d.%02d.%02d", dateDay.getValue(), dateMonth.getNum(), dateYear.getValue());
     }
 
     //==== вложенные классы ====
+
+    public enum Month {
+        JANUARY("January", 31),
+        FEBRUARY("February", 28),
+        MARCH("March", 31),
+        APRIL("April", 30),
+        MAY("May", 31),
+        JUNE("June", 30),
+        JULY("July ", 31),
+        AUGUST("August ", 31),
+        SEPTEMBER("September", 30),
+        OCTOBER("October", 31),
+        NOVEMBER("November", 30),
+        DECEMBER("December", 31),
+        ;
+
+        private final static String INVALID_VALUE_MONTH = "Invalid value for Month (valid values 1 - 12): ";
+
+        private final String name;
+        private final int numDays;
+
+        Month(String name, int numDays) {
+            this.name = name;
+            this.numDays = numDays;
+        }
+
+        @SuppressWarnings("unused")
+        public String getName() {
+            return name;
+        }
+
+        public int getNum() {
+            Month[] enums = values();
+            for (int i = 0; i < enums.length; i++) {
+                if(this == enums[i]) {
+                    return i + 1;
+                }
+            }
+            return 0;
+        }
+
+        public int getNumDays(int year) {
+            if(isFebruaryInLeapYear(this, year)) {
+                return numDays + 1;
+            } else {
+                return numDays;
+            }
+
+        }
+
+        public static int getNumDays(int numMonth, int year) {
+            validate(numMonth);
+            Month[] enums = values();
+            return enums[numMonth - 1].getNumDays(year);
+        }
+
+        public static Month valueOf(int numMonth) {
+            validate(numMonth);
+            Month[] enums = values();
+            return enums[numMonth - 1];
+        }
+
+        private static boolean isFebruaryInLeapYear(Month month, int year ) {
+            return month == FEBRUARY && Year.isLeapYear(year);
+        }
+
+        private static void validate(int numMonth) {
+            if (numMonth < 1 || numMonth > 12) {
+                throw new DateTimeException(INVALID_VALUE_MONTH + numMonth);
+            }
+        }
+
+    }
+
+
     public enum DayOfWeek {
-        MONDAY("понедельник"),
-        TUESDAY("вторник"),
-        WEDNESDAY("среда"),
-        THURSDAY("четверг"),
-        FRIDAY("пятница"),
-        SATURDAY("суббота"),
-        SUNDAY("воскресенье"),
+        MONDAY("monday"),
+        TUESDAY("tuesday"),
+        WEDNESDAY("wednesday"),
+        THURSDAY("thursday"),
+        FRIDAY("friday"),
+        SATURDAY("saturday"),
+        SUNDAY("sunday"),
         ;
 
         private final String name;
@@ -186,7 +268,7 @@ public class Date {
         }
     }
 
-    //год
+    //
     private static class Year
     {
         private final static String INVALID_VALUE_YEAR = "Invalid value for Year (valid values > 0): ";
@@ -233,67 +315,19 @@ public class Date {
             return isLeapYear(value);
         }
 
-        public boolean isLeapYear(int year) {
+        public static boolean isLeapYear(int year) {
             return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
         }
     }
 
-    //год
-    private static class Month
-    {
-        private final static String INVALID_VALUE_MONTH = "Invalid value for Month (valid values 1 - 12): ";
-        private int value;
-
-        private final int[] monthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-        public Month(int value) {
-            setValue(value);
-        }
-
-        public void setValue(int value) {
-            if((value >= 1) && (value <= 12)) {
-                this.value = value;
-            }
-            else {
-                throw new DateTimeException(INVALID_VALUE_MONTH + value);
-            }
-        }
-
-
-        public int getValue() {
-            return value;
-        }
-
-        public int getDays(int numMonth, boolean isLeapYear) {
-            if (numMonth < 1 || numMonth > 12) {
-                throw new DateTimeException(INVALID_VALUE_MONTH + numMonth);
-            }
-            int days = monthDays[numMonth - 1];
-            int FEBRUARY = 2;
-            if((numMonth == FEBRUARY) && (isLeapYear)) {
-                days++;
-            }
-            return days;
-        }
-
-        public int getDays(boolean isLeapYear) {
-            return getDays(value, isLeapYear);
-        }
-    }
-
-    //день
+    //
     private static class Day
     {
         private int value;
 
-        public Day(int value) {
-            this(value, 31);
-        }
-
         public Day(int value, int maxValue) {
             setValue(value, maxValue);
         }
-
 
         public void setValue(int value, int maxValue) {
             if(value >= 1 && value <= maxValue) {

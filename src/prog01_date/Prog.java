@@ -125,7 +125,7 @@ public class Prog {
     }
 
     private void printOnStart() {
-        System.out.println(Const.PROG_NAME + " v." + Const.PROG_VERSION);
+        System.out.println(Const.PROGRAM_NAME + " v." + Const.PROGRAM_VERSION);
         System.out.println("..........................");
         System.out.println();
     }
@@ -147,7 +147,7 @@ public class Prog {
 
     private void printHelp() {
         System.out.println();
-        System.out.println(Const.PROG_NAME + " v." + Const.PROG_VERSION);
+        System.out.println(Const.PROGRAM_NAME + " v." + Const.PROGRAM_VERSION);
         String fileName = ReaderLocalFile.getFilenameWithAbsolutePatch(Const.LOCAL_PATCH, Const.FILENAME_HELP);
         ReaderLocalFile.printFromFile(fileName);
         System.out.println();
@@ -157,7 +157,7 @@ public class Prog {
     private void daysInYear() {
         int year = Util.nextInt(sc,"Год: ");
         try {
-            Date date = new Date(1,1, year);
+            Date date = Date.of(1,1, year);
             System.out.printf("Количество дней в %d г.: %d \n", year,   date.daysInYear());
             Util.inputCharToContinue(sc);
         }
@@ -171,8 +171,7 @@ public class Prog {
         int year = Util.nextInt(sc,"Год: ");
         int month = Util.nextInt(sc,"Месяц: ");
         try {
-            Date date = new Date(1, month, year);
-            System.out.printf("Количество дней в месяце: %d \n", date.daysInMonth());
+            System.out.printf("Количество дней в месяце: %d \n", Date.Month.getNumDays(month, year));
             Util.inputCharToContinue(sc);
         }
         catch (DateTimeException ex)
