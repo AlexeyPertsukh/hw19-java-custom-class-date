@@ -20,7 +20,6 @@ https://planetcalc.ru/79/
 package prog01_date;
 
 import java.time.DateTimeException;
-import java.time.LocalDate;
 
 public class Date {
 
@@ -45,7 +44,7 @@ public class Date {
 
         //если в массиве строк не только числа, то неправильный формат строки
         for (String tmp : arr) {
-            if(!My.isInteger(tmp)) {
+            if(!Util.isInteger(tmp)) {
                 String msg = String.format("Invalid format for Date (valid values is \"DD.MM.YYYY\"): %s", tmp);
                 throw new DateTimeException( msg);
             }

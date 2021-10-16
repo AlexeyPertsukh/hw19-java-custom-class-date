@@ -34,70 +34,70 @@ public class Prog {
 
         //хэлп
         key = Command.HELP.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             printHelp();
             return;
         }
 
         //день недели
         key = Command.DAY_OF_WEEK.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             dayOfWeek();
             return;
         }
 
         //количество дней в году
         key = Command.DAYS_IN_YEAR.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             daysInYear();
             return;
         }
 
         //количество дней в месяце
         key = Command.DAYS_IN_MONTH.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             daysInMonth();
             return;
         }
 
         //порядковый номер дня в году по дате
         key = Command.NUM_DAY_OF_YEAR.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             numDayOfYear();
             return;
         }
 
         //дата по порядковому номеру дня в году
         key = Command.DATE_BY_DAY.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             dateByDay();
             return;
         }
 
         //день программиста
         key = Command.DAY_PROGRAMMER.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             dayProgrammer();
             return;
         }
 
         //кол-во дней между датами
         key = Command.DAYS_BETWEEN.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             daysBetweenDates();
             return;
         }
 
         //выход
         key = Command.END.getKey();
-        if (My.cmpStr(cmd, key)) {
+        if (Util.cmpStr(cmd, key)) {
             endProg = true;
             return;
         }
 
         //
         System.out.println("Неизвестная команда");
-        My.inputCharToContinue(sc);
+        Util.inputCharToContinue(sc);
     }
 
 
@@ -148,36 +148,36 @@ public class Prog {
     private void printHelp() {
         System.out.println();
         System.out.println(Const.PROG_NAME + " v." + Const.PROG_VERSION);
-        String fileName = ForFiles.getFilenameWithAbsolutePatch(Const.LOCAL_PATCH, Const.FILENAME_HELP);
-        ForFiles.printFromFile(fileName);
+        String fileName = ReaderLocalFile.getFilenameWithAbsolutePatch(Const.LOCAL_PATCH, Const.FILENAME_HELP);
+        ReaderLocalFile.printFromFile(fileName);
         System.out.println();
-        My.inputCharToContinue(sc);
+        Util.inputCharToContinue(sc);
     }
 
     private void daysInYear() {
-        int year = My.nextInt(sc,"Год: ");
+        int year = Util.nextInt(sc,"Год: ");
         try {
             Date date = new Date(1,1, year);
             System.out.printf("Количество дней в %d г.: %d \n", year,   date.daysInYear());
-            My.inputCharToContinue(sc);
+            Util.inputCharToContinue(sc);
         }
         catch (DateTimeException ex)
         {
-            My.inputCharToContinue(sc, "Введен некорректный номер года");
+            Util.inputCharToContinue(sc, "Введен некорректный номер года");
         }
     }
 
     private void daysInMonth() {
-        int year = My.nextInt(sc,"Год: ");
-        int month = My.nextInt(sc,"Месяц: ");
+        int year = Util.nextInt(sc,"Год: ");
+        int month = Util.nextInt(sc,"Месяц: ");
         try {
             Date date = new Date(1, month, year);
             System.out.printf("Количество дней в месяце: %d \n", date.daysInMonth());
-            My.inputCharToContinue(sc);
+            Util.inputCharToContinue(sc);
         }
         catch (DateTimeException ex)
         {
-            My.inputCharToContinue(sc, "Введен некорректный номер года или месяца");
+            Util.inputCharToContinue(sc, "Введен некорректный номер года или месяца");
         }
     }
 
@@ -186,7 +186,7 @@ public class Prog {
         Date date = inputDate();
         System.out.printf("Порядковый номер дня в году: %d \n", date.getDayOfYear());
         System.out.println("Проверка: https://allcalc.ru/node/1106");
-        My.inputCharToContinue(sc);
+        Util.inputCharToContinue(sc);
     }
 
     private void dateByDay(int year, int numDay) {
@@ -194,21 +194,21 @@ public class Prog {
             Date date = Date.dateByDay(year, numDay);
             System.out.printf("%d-й день в %d году: %s  \n", numDay, year, date);
             System.out.println("Проверка: https://allcalc.ru/node/1988");
-            My.inputCharToContinue(sc);
+            Util.inputCharToContinue(sc);
         }
         catch (DateTimeException ex) {
-            My.inputCharToContinue(sc, Const.MSG_DATE_INCORRECT);
+            Util.inputCharToContinue(sc, Const.MSG_DATE_INCORRECT);
         }
     }
 
     private void dateByDay() {
-        int year = My.nextInt(sc, "Год: ");
-        int numDay = My.nextInt(sc, "Порядковый номер дня в году: ");
+        int year = Util.nextInt(sc, "Год: ");
+        int numDay = Util.nextInt(sc, "Порядковый номер дня в году: ");
         dateByDay(year, numDay);
     }
 
     private void dayProgrammer() {
-        int year = My.nextInt(sc, "Год: ");
+        int year = Util.nextInt(sc, "Год: ");
         System.out.println("256-й день в году - ДЕНЬ ПРОГРАММИСТА " );
         dateByDay(year, 256);
     }
@@ -221,7 +221,7 @@ public class Prog {
         int days = dateFrom.daysBetween(dateTo);
         System.out.printf("Количество дней между %s - %s : %d \n", dateFrom, dateTo, days);
         System.out.println("Проверка: https://planetcalc.ru/273/");
-        My.inputCharToContinue(sc);
+        Util.inputCharToContinue(sc);
 
     }
 
@@ -231,7 +231,7 @@ public class Prog {
         Date.DayOfWeek dayOfWeek = date.getDayOfWeek();
         System.out.println("День недели: " + dayOfWeek.getName());
         System.out.println("Проверка: https://planetcalc.ru/79/");
-        My.inputCharToContinue(sc);
+        Util.inputCharToContinue(sc);
     }
 
 

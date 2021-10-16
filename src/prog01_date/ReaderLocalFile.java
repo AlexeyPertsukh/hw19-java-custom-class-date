@@ -3,8 +3,8 @@ package prog01_date;
 import java.io.*;
 import java.util.Scanner;
 
-public class ForFiles {
-    private ForFiles() {
+public class ReaderLocalFile {
+    private ReaderLocalFile() {
     }
 
     public static boolean printFromFile(String filename) {

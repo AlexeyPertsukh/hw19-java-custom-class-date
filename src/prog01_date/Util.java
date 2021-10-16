@@ -2,8 +2,8 @@ package prog01_date;
 
 import java.util.Scanner;
 
-public class My {
-    private My() {
+public class Util {
+    private Util() {
     }
 
     public static boolean isInteger(String str) {
@@ -117,7 +117,7 @@ public class My {
             msg += ". ";
         }
         msg += MSG_ENTER_Y;
-        My.nextCharLowerCase(sc, msg,'y');
+        Util.nextCharLowerCase(sc, msg,'y');
         System.out.println();
     }
 

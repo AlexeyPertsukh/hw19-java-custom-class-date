@@ -1,7 +1,7 @@
 package prog01_date;
 
 public class Const {
-    public static final String PROG_NAME = "Самодельный класс Date";
+    public static final String PROG_NAME = "Custom class Date";
     public static final String PROG_VERSION = "1.2";
     public static final String COPYRIGHT = "JAVA A01 \"ШАГ\", Запорожье 2021 ";
     public static final String AUTHOR = "Перцух Алексей";
