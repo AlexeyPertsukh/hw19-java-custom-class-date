@@ -30,67 +30,66 @@ public class Prog {
 
     private void processCommand() {
         String key;
-        Command command;
 
         //хэлп
         key = Command.HELP.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             printHelp();
             return;
         }
 
         //день недели
         key = Command.DAY_OF_WEEK.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             dayOfWeek();
             return;
         }
 
         //количество дней в году
         key = Command.DAYS_IN_YEAR.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             daysInYear();
             return;
         }
 
         //количество дней в месяце
         key = Command.DAYS_IN_MONTH.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             daysInMonth();
             return;
         }
 
         //порядковый номер дня в году по дате
         key = Command.NUM_DAY_OF_YEAR.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             numDayOfYear();
             return;
         }
 
         //дата по порядковому номеру дня в году
         key = Command.DATE_BY_DAY.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             dateByDay();
             return;
         }
 
         //день программиста
         key = Command.DAY_PROGRAMMER.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             dayProgrammer();
             return;
         }
 
         //кол-во дней между датами
         key = Command.DAYS_BETWEEN.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             daysBetweenDates();
             return;
         }
 
         //выход
         key = Command.END.getKey();
-        if (Util.cmpStr(cmd, key)) {
+        if (cmd.equalsIgnoreCase(key)) {
             endProg = true;
             return;
         }
@@ -100,29 +99,6 @@ public class Prog {
         Util.inputCharToContinue(sc);
     }
 
-
-    //
-    private Date inputDate(String msg) {
-        if(msg.isEmpty()) {
-            msg = "Введите дату";
-        }
-        Date date;
-        while(true) {
-            System.out.print(msg + " (ДД.ММ.ГГГГ): ");
-            String strDate = sc.next();
-            try {
-                date =  Date.parse(strDate);
-                return date;
-            }
-            catch (DateTimeException ex) {
-                System.out.println(Const.MSG_DATE_INCORRECT);
-            }
-        }
-    }
-
-    private Date inputDate() {
-        return inputDate("");
-    }
 
     private void printOnStart() {
         System.out.println(Const.PROGRAM_NAME + " v." + Const.PROGRAM_VERSION);
@@ -182,7 +158,7 @@ public class Prog {
 
     //порядковый номер дня в году
     private void numDayOfYear() {
-        Date date = inputDate();
+        Date date = Util.inputDate();
         System.out.printf("Порядковый номер дня в году: %d \n", date.getDayOfYear());
         System.out.println("Проверка: https://allcalc.ru/node/1106");
         Util.inputCharToContinue(sc);
@@ -214,8 +190,8 @@ public class Prog {
 
     //количество дней между двумя датами
     private void daysBetweenDates() {
-        Date dateFrom = inputDate("Введите первую дату");
-        Date dateTo = inputDate("Введите вторую дату");
+        Date dateFrom = Util.inputDate("Введите первую дату");
+        Date dateTo = Util.inputDate("Введите вторую дату");
 
         int days = dateFrom.daysBetween(dateTo);
         System.out.printf("Количество дней между %s - %s : %d \n", dateFrom, dateTo, days);
@@ -226,7 +202,7 @@ public class Prog {
 
     //день недели
     private void dayOfWeek() {
-        Date date = inputDate();
+        Date date = Util.inputDate();
         Date.DayOfWeek dayOfWeek = date.getDayOfWeek();
         System.out.println("День недели: " + dayOfWeek.getName());
         System.out.println("Проверка: https://planetcalc.ru/79/");

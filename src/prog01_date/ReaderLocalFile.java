@@ -15,8 +15,10 @@ public class ReaderLocalFile {
             while (scan.hasNextLine()) {
                 System.out.println(scan.nextLine());
             }
-            System.out.println(filename);
+//            System.out.println(filename);
             fr.close();
+
+
             return true;
         }
         catch(IOException ex){

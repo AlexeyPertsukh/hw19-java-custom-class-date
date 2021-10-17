@@ -1,5 +1,6 @@
 package prog01_date;
 
+import java.time.DateTimeException;
 import java.util.Scanner;
 
 public class Util {
@@ -78,10 +79,6 @@ public class Util {
         }
     }
 
-    public static boolean cmpStr(String str1, String str2) {
-        return (str1.compareToIgnoreCase(str2) == 0);
-    }
-
     //пауза
     public static void sleep(int n){
         try {
@@ -123,6 +120,30 @@ public class Util {
 
     public static void inputCharToContinue(Scanner sc) {
         inputCharToContinue(sc,"");
+    }
+
+    //
+    public static Date inputDate(String msg) {
+        Scanner sc = new Scanner(System.in);
+        if(msg.isEmpty()) {
+            msg = "Введите дату";
+        }
+        Date date;
+        while(true) {
+            System.out.print(msg + " (ДД.ММ.ГГГГ): ");
+            String strDate = sc.next();
+            try {
+                date =  Date.parse(strDate);
+                return date;
+            }
+            catch (DateTimeException ex) {
+                System.out.println(Const.MSG_DATE_INCORRECT);
+            }
+        }
+    }
+
+    public static Date inputDate() {
+        return inputDate("");
     }
 
 }

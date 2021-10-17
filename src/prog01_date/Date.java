@@ -80,7 +80,8 @@ public class Date {
     public int getDayOfYear() {
         int numDayOfYear = 0;
         for (int i = 1; i < dateMonth.getNum() ; i++) {
-            numDayOfYear += dateMonth.getNumDays(dateYear.getValue());
+            Month month = Month.valueOf(i);
+            numDayOfYear += month.getNumDays(dateYear.getValue());
         }
         return numDayOfYear + dateDay.getValue();
     }
@@ -139,6 +140,7 @@ public class Date {
     //день недели
     public DayOfWeek getDayOfWeek() {
         int day = daysFromStart();
+        System.out.println("***"+day);
         day = (day % 7) - 1;
         if(day < 0) {
             day = 6;
@@ -238,7 +240,6 @@ public class Date {
                 throw new DateTimeException(INVALID_VALUE_MONTH + numMonth);
             }
         }
-
     }
 
 
