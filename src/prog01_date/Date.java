@@ -171,18 +171,18 @@ public class Date {
     //==== вложенные классы ====
 
     public enum Month {
-        JANUARY("January", 31),
-        FEBRUARY("February", 28),
-        MARCH("March", 31),
-        APRIL("April", 30),
-        MAY("May", 31),
-        JUNE("June", 30),
-        JULY("July ", 31),
-        AUGUST("August ", 31),
-        SEPTEMBER("September", 30),
-        OCTOBER("October", 31),
-        NOVEMBER("November", 30),
-        DECEMBER("December", 31),
+        JANUARY("Январь", 31),
+        FEBRUARY("Февраль", 28),
+        MARCH("Март", 31),
+        APRIL("Апрель", 30),
+        MAY("Май", 31),
+        JUNE("Июнь", 30),
+        JULY("Июль", 31),
+        AUGUST("Август", 31),
+        SEPTEMBER("Сентябрь", 30),
+        OCTOBER("Октябрь", 31),
+        NOVEMBER("Ноябрь", 30),
+        DECEMBER("Декабрь", 31),
         ;
 
         private final static String INVALID_VALUE_MONTH = "Invalid value for Month (valid values 1 - 12): ";
@@ -244,13 +244,13 @@ public class Date {
 
 
     public enum DayOfWeek {
-        MONDAY("monday"),
-        TUESDAY("tuesday"),
-        WEDNESDAY("wednesday"),
-        THURSDAY("thursday"),
-        FRIDAY("friday"),
-        SATURDAY("saturday"),
-        SUNDAY("sunday"),
+        MONDAY("понедельник"),
+        TUESDAY("вторник"),
+        WEDNESDAY("среда"),
+        THURSDAY("четверг"),
+        FRIDAY("пятница"),
+        SATURDAY("суббота"),
+        SUNDAY("воскресенье"),
         ;
 
         private final String name;
